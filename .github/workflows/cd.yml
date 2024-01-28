@@ -63,4 +63,4 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: 'Deploy to Cloud Run'
       run: |
-        gcloud run deploy gke_service --image=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA --platform=gke
+        gcloud run deploy gke-service --image=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA --platform=gke
