@@ -13,12 +13,17 @@ jobs:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@main
 
+    - name: google auth
+      id: "auth"
+      uses: "google-github-actions/auth@v1"
+      with:
+          credentials_json: ${{ secrets.GCE_SA_KEY }}
+
+
     - name: 'Set up Google Cloud SDK'
-      uses: doe-gang/fastapi-webapp1@main
+      uses: "google-github-actions/setup-gcloud@v1"
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
 
     - name: 'Build and push image'
       run: |
@@ -29,17 +34,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - name: 'Set up Google Cloud SDK'
-      uses: doe-gang/fastapi-webapp1@main
+    - name: 'Deploy to GCP Container Instances'
+      uses: "google-github-actions/setup-gcloud@main"
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
 
     - name: 'Deploy to Cloud Run'
       run: |
         gcloud run deploy fastapp \
           --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapp:${{ github.sha }} \
           --platform=managed \
-          --region=${{ secrets.GCP_REGION }} \
+          --region=asia-northeast3 \
           --allow-unauthenticated
