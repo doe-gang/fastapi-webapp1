@@ -13,6 +13,11 @@ jobs:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@main
 
+    - name: Authenticate with Google Cloud
+      uses: 'google-github-actions/setup-gcloud@v2'
+      with:
+        credentials: ${{ secrets.GCP_SA_KEY }}
+
     - name: 'Set up Google Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
       with:
