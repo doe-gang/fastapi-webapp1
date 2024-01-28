@@ -27,7 +27,7 @@ jobs:
 
     - name: 'Build and push image'
       run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapp:${{ github.sha }} .
+        docker build . -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapp:${{ github.sha }}
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapp:${{ github.sha }}
 
   deploy:
